@@ -1,0 +1,7 @@
+
+means/*
+!means/.gitkeep 
+evaluation/*
+results/*
+experiments/*
+datasets/*
