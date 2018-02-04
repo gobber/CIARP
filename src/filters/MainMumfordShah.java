@@ -24,6 +24,8 @@ public class MainMumfordShah {
 	
 	static double distances [] = {100,250,250};
 	
+	static int areaFilter = 50;
+	
 	public static void main ( String args[] ) throws Exception {
 		
 		System.err.println( "Runing (Mumford-Shah)" );
@@ -36,7 +38,7 @@ public class MainMumfordShah {
 			
 			for( int base = 0 ; base < dataSets.length ; base++ ) {
 								
-				new Solution( Solution.MUMFORD_SHAH, "/results/MumfordShah2/" ).run( root, dataSetsInputPath, dataSets[base] + "/", e, distances[base] );
+				new Solution( Solution.MUMFORD_SHAH, "/results/MumfordShah2/" ).run( root, dataSetsInputPath, dataSets[base] + "/", e, 100, distances[base], areaFilter );
 			
 			}
 		

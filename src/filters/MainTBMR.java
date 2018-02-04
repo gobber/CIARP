@@ -10,6 +10,8 @@ public class MainTBMR {
 
 	static double distances [] = {100,250,250};
 	
+	static int areaFilter = 50;
+	
 	public static void main ( String args[] ) throws Exception {
 		
 		System.err.println( "Runing (TBMR)" );
@@ -22,7 +24,7 @@ public class MainTBMR {
 			
 			for( int base = 0 ; base < dataSets.length ; base++ ) {
 								
-				new Solution( Solution.TBMR, "/results/TBMR/" ).run( root, dataSetsInputPath, dataSets[base] + "/", delta, distances[base] );
+				new Solution( Solution.TBMR, "/results/TBMR/" ).run( root, dataSetsInputPath, dataSets[base] + "/", delta, 100, distances[base], areaFilter );
 			
 			}
 			

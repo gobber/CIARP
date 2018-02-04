@@ -52,7 +52,9 @@ public class Solution {
 			 		 String dataSetsInputPath,
 			 		 String dataSet,
 			 		 int filterParameter,
-			 		 double distance ) throws Exception {		
+			 		 double distanceRgb,
+			 		 double distance,
+			 		 int areaFilter) throws Exception {		
 		
 		getNextValidDir( root + saveResultsPath + "result-" , "/" + dataSet, String.valueOf(filterParameter) );
 		
@@ -62,7 +64,7 @@ public class Solution {
 			
 			if( !file.getName().endsWith( "_rgb.png" ) ) continue;
 			
-			run( file, root, dataSet, filterParameter, distance );
+			run( file, root, dataSet, filterParameter, distanceRgb, distance, areaFilter );
 			
 		}
 		
@@ -72,9 +74,11 @@ public class Solution {
 					  String root, 
 					  String dataSet,
 					  int filterParameter,
-					  double distance ) throws Exception  {
+					  double distanceRgb,
+					  double distance,
+					  int areaFilter) throws Exception  {
 		
-		System.err.println( "Processando imagem: " + file.getName() );
+		System.err.println( "Processing image: " + file.getName() );
 		
 		ColorImage imgRGB = ImageBuilder.openRGBImage( file );
 		
@@ -91,15 +95,15 @@ public class Solution {
 		switch ( typeFilter ) {
 		
 			case MUMFORD_SHAH:
-				mapFilter = filterByMumfordShah( maxtree, imgRGB, filterParameter, 100 );
+				mapFilter = filterByMumfordShah( maxtree, imgRGB, filterParameter, distanceRgb, areaFilter );
 				break;				
 				
 			case MSER:
-				mapFilter = filterByMser( maxtree, imgRGB, filterParameter, 100 );
+				mapFilter = filterByMser( maxtree, imgRGB, filterParameter, distanceRgb, areaFilter );
 				break;
 				
 			default :
-				mapFilter = filterByTbmr( maxtree, imgRGB, filterParameter, 100 );
+				mapFilter = filterByTbmr( maxtree, imgRGB, filterParameter, distanceRgb, areaFilter );
 				break;
 				
 		}		
@@ -334,7 +338,7 @@ public class Solution {
 		
 	}
 	
-	public boolean [] filterByMumfordShah( ConnectedFilteringByComponentTree maxtree, ColorImage imgRGB, int minEnergy, double distanceRgb ) {					
+	public boolean [] filterByMumfordShah( ConnectedFilteringByComponentTree maxtree, ColorImage imgRGB, int minEnergy, double distanceRgb, int areaFilter ) {					
 		
 		PruningBasedMumfordShahEnergy mumfordShahEnergy = new PruningBasedMumfordShahEnergy( maxtree, minEnergy, true );		
 		
@@ -346,7 +350,7 @@ public class Solution {
 		
 		for( NodeCT node: maxtree.getListNodes() ) {
 			
-			map[ node.getId() ] = mapMumfordShahEnergy[ node.getId() ] && node.getArea() > 50 && distRGB[ node.getId() ][ 0 ] < distanceRgb;
+			map[ node.getId() ] = mapMumfordShahEnergy[ node.getId() ] && node.getArea() > areaFilter && distRGB[ node.getId() ][ 0 ] < distanceRgb;
 			
 		}
 		
@@ -354,7 +358,7 @@ public class Solution {
 		
 	}
 	
-	public boolean [] filterByMser( ConnectedFilteringByComponentTree maxtree, ColorImage imgRGB, int delta, double distanceRgb ) {					
+	public boolean [] filterByMser( ConnectedFilteringByComponentTree maxtree, ColorImage imgRGB, int delta, double distanceRgb, int areaFilter ) {					
 		
 		PruningBasedMSER pruningBasedMSER = new PruningBasedMSER( maxtree, delta );		
 		
@@ -366,7 +370,7 @@ public class Solution {
 		
 		for( NodeCT node: maxtree.getListNodes() ) {															
 			
-			map[ node.getId() ] = mapMser[ node.getId() ] && node.getArea() > 50 && distRGB[ node.getId() ][ 0 ] < distanceRgb;
+			map[ node.getId() ] = mapMser[ node.getId() ] && node.getArea() > areaFilter && distRGB[ node.getId() ][ 0 ] < distanceRgb;
 			
 		}
 		
@@ -374,7 +378,7 @@ public class Solution {
 		
 	}
 	
-	public boolean [] filterByTbmr( ConnectedFilteringByComponentTree maxtree, ColorImage imgRGB, int tmin, double distanceRgb ) {					
+	public boolean [] filterByTbmr( ConnectedFilteringByComponentTree maxtree, ColorImage imgRGB, int tmin, double distanceRgb, int areaFilter ) {					
 		
 		PruningBasedTBMR pruningBasedTBMR = new PruningBasedTBMR( maxtree, tmin, maxtree.getInputImage().getSize());		
 		
@@ -386,7 +390,7 @@ public class Solution {
 		
 		for( NodeCT node: maxtree.getListNodes() ) {
 			
-			map[ node.getId() ] = mapTbmr[ node.getId() ] && node.getArea() > 50 && distRGB[ node.getId() ][ 0 ] < distanceRgb;
+			map[ node.getId() ] = mapTbmr[ node.getId() ] && node.getArea() > areaFilter && distRGB[ node.getId() ][ 0 ] < distanceRgb;
 			
 		}
 		

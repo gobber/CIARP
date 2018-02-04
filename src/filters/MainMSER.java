@@ -11,6 +11,10 @@ public class MainMSER {
 
 	static double distances [] = {100,250,250};
 	
+	static int areaFilter = 50;
+	
+	
+	
 	public static void main ( String args[] ) throws Exception {
 		
 		System.err.println( "Runing (MSER)" );
@@ -23,7 +27,7 @@ public class MainMSER {
 			
 			for( int base = 0 ; base < dataSets.length ; base++ ) {
 								
-				new Solution( Solution.MSER, "/results/MSER/" ).run( root, dataSetsInputPath, dataSets[base] + "/", delta, distances[base] );
+				new Solution( Solution.MSER, "/results/MSER/" ).run( root, dataSetsInputPath, dataSets[base] + "/", delta, 100, distances[base], areaFilter );
 			
 			}
 		
